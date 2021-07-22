@@ -212,7 +212,9 @@ def find_width_height_fps(vid_path):
 def cut_frame_and_save(vid_path, video_start_frame, video_end_frame, start_frame_list, end_frame_list, person_num, text_in_list):
     cap = cv2.VideoCapture(vid_path)
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    file_name = '/home/aiffel-dj16/dev/KDT_SignLanguageTranslator/cheong_gaeguri/static/videos/final.mp4'
+    new_path = os.path.abspath(os.path.dirname(__file__))[:-25] +'cheong_gaeguri'
+    file_name = new_path+'/static/videos/final.mp4'
+    print('file name: ', file_name)
     w_frame, h_frame, fps = find_width_height_fps(vid_path)
     out = cv2.VideoWriter(file_name, fourcc, fps, (w_frame, h_frame))
     cnt=0
@@ -266,7 +268,9 @@ def main(stnc_pos, is_ani=False):
     if not is_ani: # 실제 촬영 영상 짜집기 출력
 
         # 비디오 경로 반환
-        path = '/home/aiffel-dj16/dev/KDT_SignLanguageTranslator/cheong_gaeguri/static/videos/final.mp4'
+        new_path = os.path.abspath(os.path.dirname(__file__))[:-25] +'cheong_gaeguri'
+        path = new_path+'/static/videos/final.mp4'
+        # path = '/home/aiffel-dj16/dev/KDT_SignLanguageTranslator/cheong_gaeguri/static/videos/final.mp4'
 
     else: # 애니메이션 영상 경로 반환
         path = os.getcwd() + '/Ani_' + str(num) + '.mp4'

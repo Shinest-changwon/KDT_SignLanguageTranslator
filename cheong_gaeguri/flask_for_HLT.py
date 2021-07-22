@@ -1,7 +1,8 @@
 from flask import Flask, render_template, redirect, url_for, request
 
 import sys
-from konlpy.tag import Mecab
+import os
+# from konlpy.tag import Mecab
 
 import model_load_pipeline as load
 import tensorflow as tf
@@ -34,10 +35,16 @@ def mouth():
         # nouns = [n for n, tag in stnc_pos if tag in ["NR","NNG","NNP","NP","VV","VV+EC"] ]
         # print(f"this is nouns = {nouns}")
         # ###########################태깅 후 애니메이션 처리된 페이지 반환#######################
-
-        sys.path.append("/home/aiffel-dj16/dev/KDT_SignLanguageTranslator/morpheme_and_video_concat")
+        new_path = os.path.abspath(os.path.dirname(__file__))[:-14] +'morpheme_and_video_concat'
+        print('new_path: ',new_path)
+        sys.path.append(new_path)        
+        
+        # 사람 한 명이 수화
         import morpheme_and_video_concat_person as mv
 
+        # 사람 여러 명이 수화
+        # import morpheme_and_video_concat_people as mv
+        
         path = ''
         path = mv.main(result)
         print(path+"-----------------------------------------")
@@ -59,7 +66,8 @@ def mouth():
         
 @app.route('/ear',methods = ['GET', 'POST'])
 def ear():
-    sys.path.append("/home/aiffel-dj16/dev/KDT_SignLanguageTranslator/SLR-frog/SL-GCN")
+    new_path = os.path.abspath(os.path.dirname(__file__))[:-14] + 'SLR-frog/SL-GCN'
+    sys.path.append(new_path)
     import main as ktw
 
     if request.method=="GET":

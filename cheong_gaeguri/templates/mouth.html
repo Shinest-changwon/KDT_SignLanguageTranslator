@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <meta charset="utf-8">
+    <title>for_mouth</title>
+    <link rel="stylesheet" href="{{url_for('static',filename = 'css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename = 'css/toggle.css')}}" />
+    <script src ="{{url_for('static',filename = 'js/convert.js')}}"></script>
+    <script src="{{url_for('static',filename = 'js/jquery-3.5.1.min.js')}}"></script>
+    <!-- <script src="{{url_for('static',filename = 'js/brython.js')}}"></script>
+    <script src="{{url_for('static',filename = 'js/brython_stdlib.js')}}"></script> -->
+    <!-- <script type = 'text/python3' src = "{{url_for('static', filename = 'py/get_animation.py')}}"></script> -->
+
+    
+
+    <style>
+        #object{
+            height: 410px;
+        }
+        .video-container {
+            position: relative;
+            height: 0;
+            padding-bottom: 56.25%;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script>
+        function video_play(){
+
+           var h_sign_video = document.getElementById("H_sign");
+
+           if (h_sign_video.getAttribute('src')!=""){
+               h_sign_video.pause()
+           }           
+           if (h_sign_video.paused){
+               h_sign_video.play()
+           }
+        }
+        
+    </script>
+  </head>
+<!-- <body onload="brython()"> -->
+    <body>
+
+    <div id ="wrapper">
+       <form method="POST" action="/mouth">
+        <div id = "object">
+        <!-- <label for ="mouth"></label> -->
+        <textarea id = "mouth" name = "mouth" style="margin: 1%; width: 275px; height: 300px; margin-left: 3%; box-shadow: 0px 0px 5px gray; resize: none;">{{res}}</textarea>
+        <div id = "object" style="height: 50px; width: 50px; box-shadow: 0px 0px 0px;">
+            <div id = "object" style="height: 50px; margin-top: 10%; box-shadow: 0px 0px 0px; margin-left: 45%;">음성 입력<br> 
+                <label class="switch" style="margin-top: 2%;">
+                    <input id = "switch" type="checkbox" onclick="toggle(this)">
+                    <span class="slider round"></span>
+                </label>
+                <input type="submit" style="width: 170px; height: 20px; margin-left: 9%; margin-top: 2%; align-items: flex-end;" id = "convert" value="Convert" >
+            </div>
+            
+                
+            </div>
+    
+        
+        </form>
+    </div>
+    
+    <div id = "object">
+        <div id = "object" style=" width: 275px; height: 360px; margin-left: 4.5%; box-shadow: 0px 0px 5px gray; margin-top: 4%;">
+            <!-- <iframe width="275" height="360"
+                   id="H_sign"
+                   frameborder="0"
+                   src="{{url_for('static',filename = 'videos/My_VIDEO.mp4')}}"
+                   allowfullscreen
+                   o
+                   >
+                   src="{{url_for('static',filename = 'videos/My_VIDEO.mp4')}}"
+                   src = "{{url_for('static',filename = 'videos/Ani_Final_S1.mp4')}}"
+                   src = "{{url_for('static',filename = 'videos/Ani_Final_S2.mp4')}}"
+                   src = "{{url_for('static',filename = 'videos/final.mp4')}}"
+                   src = "{{url_for('static',filename = '{{cont}}')}}"
+                   src = "{{url_for('static',filename = 'videos/final.mp4')}}"
+            </iframe> -->
+
+            <video
+
+            
+            
+            src = "{{url_for('static',filename = 'videos/final.mp4')}}"
+            id="H_sign"
+            width="275" height="360"
+            style="object-fit: fill;"
+            autoplay
+            >
+
+            </video>
+            
+            <!-- <script>
+                alert("{{cont}}")
+            </script> -->
+        </div>
+        <input type="button" id = "play" value="재생" style="width: 50px; height: 30px; margin-left: 4%;" onclick= "video_play(this)">
+    </div>
+
+
+
+    <!-- <div id = "object">
+    <input type="text" style="margin: 2%; width: 275px; height: 360px; box-shadow: 0px 0px 5px gray;">
+        <div id = "footer">
+            <input type="button" style="width: 280px; height: 12px;" value="Convert">
+        </div>
+    </div> -->
+    </div>
+    <script>
+        
+    </script>
+  </body>
+</html>

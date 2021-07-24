@@ -9,7 +9,7 @@ import numpy as np
 
 tmp = ""
 for i in os.path.realpath(__file__):
-    tmp+=i
+    tmp+=i 
     if "morpheme_and_video_concat" in tmp:
         break
 
@@ -112,9 +112,8 @@ root
 # 문장 번호 찾기
 def find_sen_num(stnc_pos): # stnc_pos = ['여기', '1호', '되다']
     
-    os.chdir("/home/aiffel-dj16/dev/KDT_SignLanguageTranslator/morpheme_and_video_concat")
-    print("여기가 경로"+os.getcwd()+"---------------------------------------------------")
-    df = pd.read_csv('sen.csv')
+    df = pd.read_csv('sen.csv',encoding = 'utf-8')
+    
     # 컬럼 리스트 만들기
     col_list = df.columns[4:] # ['한국수어 형태소', 'Unnamed: 5', 'Unnamed: 6', 'Unnamed: 7', 'Unnamed: 8', 'Unnamed: 9', 'Unnamed: 10', 'Unnamed: 11']
     # 형태소와 일치하는 문장 csv파일에서 찾기
@@ -211,11 +210,22 @@ def cut_frame_and_save(vid_path,start_frame,end_frame,idx, text_in):
                 try:
                     image2 = Image.fromarray(frame)
                     draw = ImageDraw.Draw(image2)
-                    draw.text((w_frame//2-(len(text_in)*25),int(h_frame*0.77)), text_in, font=ImageFont.truetype("./NotoSansCJK-Black.ttc", 50), fill=(255,255,255))
+                    ######################kyeong-debug
+                    # print(f"kyeong - debug -------- {w_frame//2-(len(text_in)*25)}")
+                    # print(f"kyeong - debug -------- {int(h_frame*0.77)}")
+                    # print(f"kyeong - debug -------- {text_in}")
+                    try:
+                        draw.text((w_frame//2-(len(text_in)*25),int(h_frame*0.77)), text_in, font=ImageFont.truetype("./NotoSansCJK-Black.ttc", 50), fill=(255,255,255))
+                    except Exception as e:
+                        print(e)
+                    #222 - exception occured
+                    # draw.text((w_frame//2-(len(text_in)*25),int(h_frame*0.77)), text_in, font=ImageFont.truetype("./NotoSansCJK-Black.ttc", 50), fill=(255,255,255))
+                   
                     image3 = np.array(image2)
                     out.write(image3)
                     print('!!write 성공 !!')
-                except: print('실패write')
+                except Exception as e: 
+                    print(f"cut_frame_and_save(method) : {e}")
         else:
             break
     cap.release()
@@ -249,6 +259,7 @@ def main2(stnc_pos):
         caps = []
         for video in video_list:
             try:
+                print(video)
                 cap = VideoFileClip(video)
                 caps.append(cap)
 
@@ -256,7 +267,10 @@ def main2(stnc_pos):
         
         # 입력된 비디오 모두 concatenate
         final_clip = concatenate_videoclips(caps)
-        final_clip.write_videofile('/home/aiffel-dj16/dev/KDT_SignLanguageTranslator/cheong_gaeguri/static/videos/final.mp4')
+        new_path = os.path.abspath(os.path.dirname(__file__))[:-25] +'cheong_gaeguri'
+        
+        path = new_path+'/static/videos/final.mp4'
+        final_clip.write_videofile(path)
     elif len(stnc_pos) == 1: print('영상 1개뿐.')
     else: print('영상 없음.')
     
@@ -267,7 +281,9 @@ def main(stnc_pos, is_ani=False):
         print('main1 완료')
         main2(stnc_pos)
         # concat한 비디오 경로 반환
-        path = '/home/aiffel-dj16/dev/KDT_SignLanguageTranslator/cheong_gaeguri/static/videos/final.mp4'
+        new_path = os.path.abspath(os.path.dirname(__file__))[:-25] +'cheong_gaeguri'
+        
+        path = new_path+'/static/videos/final.mp4'
 
     else: # 애니메이션 영상 경로 반환
         path = os.getcwd() + '/Ani_' + str(num) + '.mp4'
@@ -281,21 +297,23 @@ def main(stnc_pos, is_ani=False):
     return path
 
 # 코드 합칠 때에는 아래는 주석 처리
-# if __name__ == '__main__':
-#     """
-#     [시나리오 1번] - 영등포로 가고 싶은 농인
-#     문장번호 발화자
-#     (354)    농: 안녕하세요
-#     (116)    농: 1호선을 타는 곳은 어디인가요?
-#     (83)     청: 여기서 1호선을 탈 수 있습니다. --수어 구조 변환--> ['여기', '일호', '되다']
+if __name__ == '__main__':
+    """
+    [시나리오 1번] - 영등포로 가고 싶은 농인
+    문장번호 발화자
+    (354)    농: 안녕하세요
+    (116)    농: 1호선을 타는 곳은 어디인가요?
+    (83)     청: 여기서 1호선을 탈 수 있습니다. --수어 구조 변환--> ['여기', '일호', '되다']
 
-#     [시나리오 2번] - 신도림역에서
-#     문장번호 발화자
-#     (1359)   농: 서울대학교 방향으로 가려면 어떻게 가나요?
-#     (385)    청: 지하철 갈아타는 곳으로 안내해 드릴까요? --수어 구조 변환--> ['지하철', '곳', '안내하다']
-#     (355)    농: 감사합니다.
-#     """    
-#     stnc_pos = ['지하철', '곳', '안내하다'] # ['여기', '1호', '되다']
-#     path = main(stnc_pos)
-#     print('final path: ',path)
+    [시나리오 2번] - 신도림역에서
+    문장번호 발화자
+    (1359)   농: 서울대학교 방향으로 가려면 어떻게 가나요?
+    (385)    청: 지하철 갈아타는 곳으로 안내해 드릴까요? --수어 구조 변환--> ['지하철', '곳', '안내하다']
+    (355)    농: 감사합니다.
+    """    
+    # # stnc_pos = ['지하철', '곳', '안내하다']
+    # # stnc_pos =  ['여기', '1호', '되다']
+    # # stnc_pos = "여기서 1호선을 탈 수 있습니다"
+    # path = main(stnc_pos)
+    # print('final path: ',path)
     

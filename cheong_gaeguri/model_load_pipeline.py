@@ -16,7 +16,7 @@ import matplotlib.font_manager as fm
 fontpath = '/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf'
 font = fm.FontProperties(fname=fontpath, size=9)
 plt.rc('font', family='NanumBarunGothic') 
-mpl.font_manager._rebuild()
+# mpl.font_manager._rebuild()
 
 
 # In[2]:
@@ -522,12 +522,12 @@ def pipeline(sent):
     checkpoint = tf.train.Checkpoint(optimizer=optimizer,
                                     encoder=encoder,
                                     decoder=decoder)
-    print("-----------------------------"+checkpoint_prefix)
+    
     
     # eval_checkpoint_dir = './eval_training_checkpoints'
     eval_checkpoint_dir = os.getcwd() + '/eval_training_checkpoints'
     eval_checkpoint_prefix = os.path.join(eval_checkpoint_dir, "ckpt")
-    print("-----------------------"+eval_checkpoint_prefix)
+    
     eval_checkpoint = tf.train.Checkpoint(optimizer=optimizer,
                                     encoder=encoder,
                                     decoder=decoder)

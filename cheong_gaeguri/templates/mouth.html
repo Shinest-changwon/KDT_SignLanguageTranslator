@@ -92,7 +92,7 @@
 
             
             
-            src = "{{cont}}"
+            src = "{{url_for('static',filename = 'videos/final.mp4')}}"
             id="H_sign"
             width="275" height="360"
             style="object-fit: fill;"
@@ -101,9 +101,6 @@
 
             </video>
             
-            <script>
-                alert("{{cont}}")
-            </script>
         </div>
         <input type="button" id = "play" value="재생" style="width: 50px; height: 30px; margin-left: 4%;" onclick= "video_play(this)">
     </div>

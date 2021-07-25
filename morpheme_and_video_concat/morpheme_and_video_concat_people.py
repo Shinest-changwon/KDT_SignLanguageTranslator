@@ -83,7 +83,7 @@ root
     │  │
     │  └[원천]32_real_word_video
     │
-    └sen # 0~1500번 영상은 홀수 폴더, 1501~3000번 영상은 짝수 폴더
+    └sen # 0~1000번 영상은 홀수 폴더, 1001~2000번 영상은 짝수 폴더
        ├[원천]01_real_sen_video
        │  └01
        │    ├NIA_SL_SEN0001_REAL_D.mp4  
@@ -92,16 +92,16 @@ root
        │    ├NIA_SL_SEN0001_REAL_R.mp4
        │    ├NIA_SL_SEN0001_REAL_U.mp4
        │    ├...
-       │    └NIA_SL_SEN1500_REAL_U.mp4
+       │    └NIA_SL_SEN1000_REAL_U.mp4
        ├[원천]02_real_word_video
        │  └01-1
-       │    ├NIA_SL_SEN1501_REAL_D.mp4  
-       │    ├NIA_SL_SEN1501_REAL_F.mp4
-       │    ├NIA_SL_SEN1501_REAL_L.mp4
-       │    ├NIA_SL_SEN1501_REAL_R.mp4
-       │    ├NIA_SL_SEN1501_REAL_U.mp4
+       │    ├NIA_SL_SEN1001_REAL_D.mp4  
+       │    ├NIA_SL_SEN1001_REAL_F.mp4
+       │    ├NIA_SL_SEN1001_REAL_L.mp4
+       │    ├NIA_SL_SEN1001_REAL_R.mp4
+       │    ├NIA_SL_SEN1001_REAL_U.mp4
        │    ├...
-       │    └NIA_SL_SEN3000_REAL_U.mp4
+       │    └NIA_SL_SEN2000_REAL_U.mp4
        │  
        ├...
        │
@@ -152,7 +152,7 @@ def redefine_frame(num, i, rand_idx):
     print(basic_path)
 
     # 각 단어별 다른 사람을 사용하기 위해 morpheme json 파일 따로 불러오기
-    person_num = str(i+rand_idx).zfill(2)
+    person_num = '01'
     json_path = basic_path+'/[라벨링]01_real_'+word_sen+'_morpheme/morpheme/'+person_num+'/NIA_SL_'+word_sen.upper()+str(num).zfill(4)+'_REAL'+person_num+'_F_morpheme.json'
     with open(json_path, 'r') as morpheme_json:
         morpheme_data = json.load(morpheme_json)
@@ -166,22 +166,23 @@ def redefine_frame(num, i, rand_idx):
 def find_video_path(num, person_num):
     word_sen = 'sen'
     basic_path = os.getcwd()+'/video/'+word_sen+'/[원천]'
-    print(basic_path)
     
     if word_sen == 'word': 
-        if 0 <= num <=1500:
-            vid_person_num = str(int(person_num)*2 - 1).zfill(2)
-            vid_person_num_sub = person_num + '-1'
-        else:
+        if num <=1500:
             vid_person_num = str(int(person_num)*2).zfill(2)
             vid_person_num_sub = person_num
+        else:
+            vid_person_num = str(int(person_num)*2 - 1).zfill(2)
+            vid_person_num_sub = person_num + '-1'
     else:
-        if 0 <= num <=1500:
+        if num <=1000:
             vid_person_num = str(int(person_num)*2 - 1).zfill(2)
             vid_person_num_sub = person_num
         else:
             vid_person_num = str(int(person_num)*2).zfill(2)
             vid_person_num_sub = person_num + '-1'
+
+    print('vid_person_num: {}, vid_person_num_sub: {}'.format(vid_person_num,vid_person_num_sub))
     vid_path = basic_path+vid_person_num+'_real_'+word_sen+'_video/'+vid_person_num_sub+'/NIA_SL_'+word_sen.upper()+str(num).zfill(4)+'_REAL'+person_num+'_F.mp4'
     return vid_path
 
@@ -231,14 +232,14 @@ def cut_frame_and_save(vid_path,start_frame,end_frame,idx, text_in):
     cap.release()
     out.release()
 
-# 형태소 리스트로부터 각 형태소에 해당하는 영상 잘라서 저장
+# 형태소 리스트로부터 형태소에 해당하는 영상 잘라서 저장
 def main1(stnc_pos):
     # 문장 번호 찾기
     num = find_sen_num(stnc_pos)
     print('num: ', num)
     # 사람 번호 랜덤으로 선정
     import random
-    rand_idx = random.randint(1,15)
+    rand_idx = 1#random.randint(1,15)
     print('rand_idx: ', rand_idx)
     # 반복문(형태소 개수만큼)
     for i in range(len(stnc_pos)):
@@ -275,7 +276,7 @@ def main2(stnc_pos):
     else: print('영상 없음.')
     
 def main(stnc_pos, is_ani=False):
-    stnc_pos = stnc_pos.split(" ")[:-2]
+    # stnc_pos = stnc_pos.split(" ")[:-2]
     if not is_ani: # 실제 촬영 영상 짜집기 출력
         main1(stnc_pos)
         print('main1 완료')

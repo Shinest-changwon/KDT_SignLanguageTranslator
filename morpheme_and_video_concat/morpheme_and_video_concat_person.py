@@ -83,7 +83,7 @@ root
     │  │
     │  └[원천]32_real_word_video
     │
-    └sen # 0~1500번 영상은 홀수 폴더, 1501~3000번 영상은 짝수 폴더
+    └sen # 0~1000번 영상은 홀수 폴더, 1001~2000번 영상은 짝수 폴더
        ├[원천]01_real_sen_video
        │  └01
        │    ├NIA_SL_SEN0001_REAL_D.mp4  
@@ -92,16 +92,16 @@ root
        │    ├NIA_SL_SEN0001_REAL_R.mp4
        │    ├NIA_SL_SEN0001_REAL_U.mp4
        │    ├...
-       │    └NIA_SL_SEN1500_REAL_U.mp4
+       │    └NIA_SL_SEN1000_REAL_U.mp4
        ├[원천]02_real_word_video
        │  └01-1
-       │    ├NIA_SL_SEN1501_REAL_D.mp4  
-       │    ├NIA_SL_SEN1501_REAL_F.mp4
-       │    ├NIA_SL_SEN1501_REAL_L.mp4
-       │    ├NIA_SL_SEN1501_REAL_R.mp4
-       │    ├NIA_SL_SEN1501_REAL_U.mp4
+       │    ├NIA_SL_SEN1001_REAL_D.mp4  
+       │    ├NIA_SL_SEN1001_REAL_F.mp4
+       │    ├NIA_SL_SEN1001_REAL_L.mp4
+       │    ├NIA_SL_SEN1001_REAL_R.mp4
+       │    ├NIA_SL_SEN1001_REAL_U.mp4
        │    ├...
-       │    └NIA_SL_SEN3000_REAL_U.mp4
+       │    └NIA_SL_SEN2000_REAL_U.mp4
        │  
        ├...
        │
@@ -186,14 +186,14 @@ def find_video_path(num, person_num):
     basic_path = os.getcwd()+'/video/'+word_sen+'/[원천]'
     
     if word_sen == 'word': 
-        if 0 <= num <=1500:
-            vid_person_num = str(int(person_num)*2 - 1).zfill(2)
-            vid_person_num_sub = person_num + '-1'
-        else:
+        if num <=1500:
             vid_person_num = str(int(person_num)*2).zfill(2)
             vid_person_num_sub = person_num
+        else:
+            vid_person_num = str(int(person_num)*2 - 1).zfill(2)
+            vid_person_num_sub = person_num + '-1'
     else:
-        if 0 <= num <=1500:
+        if num <=1000:
             vid_person_num = str(int(person_num)*2 - 1).zfill(2)
             vid_person_num_sub = person_num
         else:
@@ -252,7 +252,7 @@ def cut_frame_and_save(vid_path, video_start_frame, video_end_frame, start_frame
 # 형태소 리스트로부터 각 형태소에 해당하는 영상 잘라서 저장
 def main(stnc_pos, is_ani=False):
     # 문장 번호 찾기
-    stnc_pos = stnc_pos.split(" ")[:-2]
+    # stnc_pos = stnc_pos.split(" ")[:-2]
     num = find_sen_num(stnc_pos)
     print('num: ', num)
 

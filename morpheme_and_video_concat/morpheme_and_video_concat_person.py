@@ -252,7 +252,7 @@ def cut_frame_and_save(vid_path, video_start_frame, video_end_frame, start_frame
 # 형태소 리스트로부터 각 형태소에 해당하는 영상 잘라서 저장
 def main(stnc_pos, is_ani=False):
     # 문장 번호 찾기
-    # stnc_pos = stnc_pos.split(" ")[:-2]
+    stnc_pos = stnc_pos.split(" ")[:-2]
     num = find_sen_num(stnc_pos)
     print('num: ', num)
 

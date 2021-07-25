@@ -152,7 +152,7 @@ def redefine_frame(num, i, rand_idx):
     print(basic_path)
 
     # 각 단어별 다른 사람을 사용하기 위해 morpheme json 파일 따로 불러오기
-    person_num = '01'
+    person_num = str(i+rand_idx).zfill(2) # '01'
     json_path = basic_path+'/[라벨링]01_real_'+word_sen+'_morpheme/morpheme/'+person_num+'/NIA_SL_'+word_sen.upper()+str(num).zfill(4)+'_REAL'+person_num+'_F_morpheme.json'
     with open(json_path, 'r') as morpheme_json:
         morpheme_data = json.load(morpheme_json)
@@ -239,7 +239,8 @@ def main1(stnc_pos):
     print('num: ', num)
     # 사람 번호 랜덤으로 선정
     import random
-    rand_idx = 1#random.randint(1,15)
+    rand_idx = random.randint(1,15)
+    # rand_idx = 1
     print('rand_idx: ', rand_idx)
     # 반복문(형태소 개수만큼)
     for i in range(len(stnc_pos)):
@@ -276,7 +277,7 @@ def main2(stnc_pos):
     else: print('영상 없음.')
     
 def main(stnc_pos, is_ani=False):
-    # stnc_pos = stnc_pos.split(" ")[:-2]
+    stnc_pos = stnc_pos.split(" ")[:-2]
     if not is_ani: # 실제 촬영 영상 짜집기 출력
         main1(stnc_pos)
         print('main1 완료')

@@ -231,7 +231,10 @@ def cut_frame_and_save(vid_path, video_start_frame, video_end_frame, start_frame
                     print('{}번째 처리중'.format(i))
                     image2 = Image.fromarray(frame)
                     draw = ImageDraw.Draw(image2)
-                    draw.text((w_frame//2-(len(text_in_list[i])*25),int(h_frame*0.77)), text_in_list[i], font=ImageFont.truetype("./NotoSansCJK-Black.ttc", 50), fill=(255,255,255))
+                    try:
+                        draw.text((w_frame//2-(len(text_in_list[i])*25),int(h_frame*0.77)), text_in_list[i], font=ImageFont.truetype("./NotoSansCJK-Black.ttc", 50), fill=(255,255,255))
+                    except Exception as e:
+                        print(f"draw error : {e}")
                     image3 = np.array(image2)
                     out.write(image3)
                 elif end_frame_list[i] < cnt:

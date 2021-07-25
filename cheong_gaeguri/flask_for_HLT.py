@@ -32,7 +32,7 @@ def mouth():
         sys.path.append(new_path)        
         
         #형태소 분석 - 어순 - 동영상 생성 스크립트
-        import morpheme_and_video_concat_people as mv
+        import morpheme_and_video_concat_person as mv
         
         path = ''
         path = mv.main(result)
